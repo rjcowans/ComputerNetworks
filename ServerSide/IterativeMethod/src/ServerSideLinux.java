@@ -1,5 +1,3 @@
-package testfile;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,20 +13,20 @@ public class ServerSideLinux {
         Process uptimeDate = Runtime.getRuntime().exec("date");
         BufferedReader in2 = new BufferedReader(new InputStreamReader(uptimeDate.getInputStream()));
         String date = in2.readLine();
+        in2.close();
         String dateHolder[] = date.split(" ");
         File Logging = new File("./" + dateHolder[1] + "_" + dateHolder[2]);
         BufferedWriter output = new BufferedWriter(new FileWriter(Logging));
         ServerSocket listener = new ServerSocket(9090);
-        out.println("Opening port " + listener.getLocalPort()  + "and  waiting on IP address of " + listener.getInetAddress() );
-        try {
-            while (true) {
+        System.out.println("Opening port " + listener.getLocalPort()  + "and  waiting on IP address");
+        boolean a = true;
+            while (a != false) {
                 Socket socket = listener.accept();
-                out.println("Estblished Connection with a socket of the address " + socket.getInetAddress());
-
-                try {
-                    out.println("Attempting to read input from port");
-                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    String intake = in.readLine();
+                System.out.println("Estblished Connection with a socket of the address " + socket.getInetAddress());
+                BufferedReader toy = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    System.out.println("Attempting to read input from port");
+                    String intake = toy.readLine();
+                    System.out.println(intake);
                     int command = Integer.parseInt(intake);
                     Stats backend = new Stats();
                     switch (command){
@@ -40,12 +38,15 @@ public class ServerSideLinux {
                             break;
                         case 3:
                             BigSender = backend.Mem();
+                            amount = BigSender.length;
                             break;
                         case 4:
                             BigSender = backend.NetStat();
+                            amount = BigSender.length;
                             break;
                         case 5:
                             BigSender = backend.who();
+                            amount = BigSender.length;
                             break;
                         case 6:
                             BigSender = backend.runs();
@@ -53,70 +54,72 @@ public class ServerSideLinux {
                             break;
                         case 7:
                             sender = "Quiting program";
+                            a = false;
                             break;
                         default:
                             sender = "Improper Entry try again";
                     }
-                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    if (!(sender.equals("null"))){
-                        System.out.println(sender);
-                        out.write(sender);
-                        output.write(sender + "\n");
-                    }
-                    else{
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                    if (command == 3 || command == 4 || command == 5 || command == 6){
                         System.out.println("Sending Info");
                         for (int i = 0; i < amount; i++){
-                                System.out.println(BigSender[i]);
-                                out.write(BigSender[i]);
+                                //System.out.println(BigSender[i]);
+                                out.println(BigSender[i]);
                                 output.write(BigSender[i] + "\n");
                         }
                     }
-                } finally {
-                    socket.close();
-                    output.close();
-                }
-            }
-        } finally {
-            listener.close();
-        }
+                  else{
+                        System.out.println(sender);
+                        out.println(sender);
+                        output.write(sender + "\n");
+                        sender = "null";
 
+}
+            socket.close();
+
+        }
+            listener.close();
+            output.close();
     }
 }
 
 class Stats {
 
-    private String uptime;
-    String[] Memoray;
-    private String usage;
-    private String headerUsage;
-    String[] ps;
-    String[] users;
-    String[] netStuff;
-    String date;
+    public String uptime;
+    public String[] Memoray = new String[2];
+    public String usage;
+    public String headerUsage;
+    public String[] netStuff;
+    public String[] users;
+    public String[] ps;
+
+    public String date;
 
     public Stats() throws IOException{
         String uptime = "";
         String usage = "";
         String headerUsage = "";
-        String[] Mem = new String[1];
+        String[] Mem = new String[2];
     }
 
-    protected  String Date() throws IOException{
+    public  String Date() throws IOException{
         Process uptimeDate = Runtime.getRuntime().exec("date");
         BufferedReader in = new BufferedReader(new InputStreamReader(uptimeDate.getInputStream()));
         date = in.readLine();
+        in.close();
         return date;
     }
 
-    protected String Time() throws IOException{
+    public String Time() throws IOException{
         //This prints the uptime
         Process uptimeTime = Runtime.getRuntime().exec("uptime");
         BufferedReader in = new BufferedReader(new InputStreamReader(uptimeTime.getInputStream()));
         uptime = in.readLine();
+        in.close();
         return uptime;
     }
 
-    protected String[] Mem() throws IOException {
+    public String[] Mem() throws IOException {
         //This print the memory usage
         Process uptimeUsage = Runtime.getRuntime().exec("free -m");
         BufferedReader in_2 = new BufferedReader(new InputStreamReader(uptimeUsage.getInputStream()));
@@ -134,31 +137,34 @@ class Stats {
         out.println(usage);
         Memoray[0] = headerUsage;
         Memoray[1] = usage;
+        in_2.close();
         return Memoray;
     }
 
-    protected String[] NetStat() throws IOException {
+    public String[] NetStat() throws IOException {
 //This prints back the netstat
         Process uptimeNetstat = Runtime.getRuntime().exec("netstat -an ");
         BufferedReader in_2 = new BufferedReader(new InputStreamReader(uptimeNetstat.getInputStream()));
         BufferedReader in_3 = new BufferedReader(new InputStreamReader(uptimeNetstat.getInputStream()));
         String line_3;
+        String line_4;
         int i = 0;
         while ((line_3 = in_2.readLine()) != null) {
-            out.println(line_3);
+            System.out.println(line_3);
             i++;
         }
 
         netStuff = new String[i];
         i = 0;
-        while ((line_3 = in_3.readLine()) != null){
-            netStuff[i]=line_3;
+        while ((line_4 = in_3.readLine()) != null){
+            netStuff[i]=line_4;
             i++;
         }
+        in_2.close();in_3.close();
         return netStuff;
     }
 
-    protected String[] who() throws IOException {
+    public String[] who() throws IOException {
         //This prints bacl the current user
         Process uptimeUsers = Runtime.getRuntime().exec("who");
         BufferedReader in_4 = new BufferedReader(new InputStreamReader(uptimeUsers.getInputStream()));
@@ -174,9 +180,10 @@ class Stats {
             users[i]=line_4;
             i++;
         }
+        in_5.close();in_4.close();
         return users;
     }
-    protected String[] runs() throws IOException{
+    public String[] runs() throws IOException{
         //This show the process that are running
         Process uptimeCurrentProcess = Runtime.getRuntime().exec("ps");
         BufferedReader in_6 = new BufferedReader(new InputStreamReader(uptimeCurrentProcess.getInputStream()));
@@ -196,5 +203,4 @@ class Stats {
         return ps;
     }
 }
-
 
