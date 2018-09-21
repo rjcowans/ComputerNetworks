@@ -6,12 +6,9 @@ import java.net.Socket;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import static java.lang.System.out;
-
 public class ServerSideLinux {
     public static String sender = "null";
     public static void main(String[] args) throws IOException, ParseException {
-        ArrayList<String> BigSender = new ArrayList<String>();
         Process uptimeDate = Runtime.getRuntime().exec("date");
         BufferedReader in2 = new BufferedReader(new InputStreamReader(uptimeDate.getInputStream()));
         String date = in2.readLine();
@@ -30,7 +27,8 @@ public class ServerSideLinux {
             String intake = toy.readLine();
             System.out.println(intake);
             int command = Integer.parseInt(intake);
-            Stats backend = new Stats();
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            Stats backend = new Stats(out);
             switch (command){
                 case 1:
                     sender = backend.Date();
@@ -39,16 +37,16 @@ public class ServerSideLinux {
                     sender = backend.Time();
                     break;
                 case 3:
-                    BigSender = backend.Mem();
+                    backend.Mem();
                     break;
                 case 4:
-                    BigSender = backend.NetStat();
+                    backend.NetStat();
                     break;
                 case 5:
-                    BigSender = backend.who();
+                    backend.who();
                     break;
                 case 6:
-                    BigSender = backend.runs();
+                    backend.runs();
                     break;
                 case 7:
                     sender = "Quiting program";
@@ -57,21 +55,12 @@ public class ServerSideLinux {
                 default:
                     sender = "Improper Entry try again";
             }
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            if (command == 3 || command == 4 || command == 5 || command == 6){
-                System.out.println("Sending Info");
-                for (int i = 0; i < BigSender.size(); i++){
-                    //System.out.println(BigSender[i]);
-                    out.println(BigSender.get(i));
-                    output.write(BigSender.get(i) + "\n");
-                }
-            }
-            else{
+
+            if (command <=2){
                 System.out.println(sender);
                 out.println(sender);
                 output.write(sender + "\n");
                 sender = "null";
-
             }
             backend.EmptyList();
             socket.close();
@@ -84,11 +73,17 @@ public class ServerSideLinux {
 
 class Stats {
     public ArrayList<String> BigSender = new ArrayList<String>();
+    PrintWriter out;
+
+
+    public Stats (PrintWriter out){
+        this.out = out;
+    }
 
     public void EmptyList(){
             BigSender.clear();
     }
-    
+
 
     public  String Date() throws IOException{
         String date = "";
@@ -109,7 +104,7 @@ class Stats {
         return uptime;
     }
 
-    public ArrayList<String> Mem() throws IOException {
+    public void Mem() throws IOException {
         //This print the memory usage
         String headerUsage = "";
         String usage = "";
@@ -130,40 +125,42 @@ class Stats {
         BigSender.add(headerUsage);
         BigSender.add(usage);
         in_2.close();
-        return BigSender;
     }
 
-    public ArrayList<String> NetStat() throws IOException {
+    public void NetStat() throws IOException {
 //This prints back the netstat
         Process uptimeNetstat = Runtime.getRuntime().exec("netstat -an ");
         BufferedReader in_2 = new BufferedReader(new InputStreamReader(uptimeNetstat.getInputStream()));
         String line_3;
         while ((line_3 = in_2.readLine()) != null){
             BigSender.add(line_3);
+            out.println(line_3);
         }
         in_2.close();
-        return BigSender;
+        return;
     }
 
-    public ArrayList<String> who() throws IOException {
+    public void who() throws IOException {
         //This prints bacl the current user
         Process uptimeUsers = Runtime.getRuntime().exec("who");
         BufferedReader in_4 = new BufferedReader(new InputStreamReader(uptimeUsers.getInputStream()));
         String line_4;
         while ((line_4 = in_4.readLine()) != null){
             BigSender.add(line_4);
+            out.println(line_4);
         }
         in_4.close();
-        return BigSender;
+        return;
     }
-    public ArrayList<String> runs() throws IOException{
+    public void runs() throws IOException{
         //This show the process that are running
         Process uptimeCurrentProcess = Runtime.getRuntime().exec("ps");
         BufferedReader in_6 = new BufferedReader(new InputStreamReader(uptimeCurrentProcess.getInputStream()));
         String line_5;
         while ((line_5 = in_6.readLine()) != null) {
             BigSender.add(line_5);
+            out.println(line_5);
         }
-        return BigSender;
+        return;
     }
 }
