@@ -18,13 +18,15 @@ public class ServerSide {
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(9090);
         try {
-            while (true) {
+            while(true){
                 Socket socket = listener.accept();
-                try {
-                    PrintWriter out =
-                            new PrintWriter(socket.getOutputStream(), true);
-                    out.println(new Date().toString());
-                } finally {
+		System.out.println("O Looks like we got something\n");
+                try{
+                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+		    String date = (new Date().toString());    	
+		    System.out.println("Sending back " + date + " to " + socket.getInetAddress());
+		    out.println(date);
+               }finally{
                     socket.close();
                 }
             }
