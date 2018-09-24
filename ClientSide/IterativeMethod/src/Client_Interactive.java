@@ -6,43 +6,59 @@ import java.net.Socket;
 import java.text.ParseException;
 import java.util.Scanner;
 
-/**
- * Trivial client for the date server.
- */
-public class SocketMaker  {
+
+public class Client_Interactive {
 
     /**
-     * Runs the client as an application.  First it displays a dialog
-     * box asking for the IP address or hostname of a host running
-     * the date server, then connects to it and displays the date that
-     * it serves.
+     * Interactive Client for Demo Purposes
+     * TODO: Fill Out Correctly
      */
     public static void main(String[] args) throws IOException, ParseException {
+
+        Scanner input = new Scanner(System.in);
+
+        //Get Server Address
+        if (args[0] == null) {//No address given
+            //Print error message then exit.
+            System.out.print("ERROR: No Server Address Specified. Press Enter to Exit.");
+            input.nextLine();
+            return;
+        }
         String serverAddress = args[0];
         String command = "";
-        Scanner in = new Scanner(System.in);
-        while (!(command.equals("7"))){
-            System.out.println("Enter a command my friend or exit to end Program");
-            command  = in.nextLine();
+
+
+        Socket s = new Socket(serverAddress, 9090);
+        PrintWriter go = new PrintWriter(s.getOutputStream(), true);
+
+        while (true) {
+            DisplayMenu();
+            command = input.nextLine();
             if (command.equals("exit")) {
                 System.out.println("TERMINATING! GOOD BYE!");
-                System.exit(0);
+                break;
             } else {
-                Socket s = new Socket(serverAddress, 9090);
-                PrintWriter go = new PrintWriter(s.getOutputStream(),true);
                 go.println(command);
                 System.out.println("Sent " + command);
-                BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                BufferedReader response = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 System.out.println("Recieved answer");
                 String line;
-                while ((line = input.readLine()) != null){
+                while ((line = response.readLine()) != null) {
                     String answer = line;
                     System.out.println(answer);
                 }
-                s.close();
-
             }
         }
         System.exit(0);
     }
+
+
+    static void DisplayMenu() {
+        //Displays the Client Menu
+        System.out.println("Welcome to Team 5's Client Application Demo!");
+        System.out.println("Please select an option from the menu:");
+        System.out.println("1) Get the host's current date and time.");
+
+    }
+
 }
