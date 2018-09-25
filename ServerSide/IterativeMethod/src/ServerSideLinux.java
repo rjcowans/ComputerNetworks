@@ -1,5 +1,3 @@
-package testfile;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,18 +15,20 @@ public class ServerSideLinux {
         File Logging = new File("./" + dateHolder[1] + "_" + dateHolder[2]);
         BufferedWriter output = new BufferedWriter(new FileWriter(Logging));
         ServerSocket listener = new ServerSocket(9090);
-        System.out.println("Opening port " + listener.getLocalPort()  + "and  waiting on IP address");
+        System.out.println("Opening port " + listener.getLocalPort()  + " and waiting on IP address");
+        Socket socket = listener.accept();
+        System.out.println("Established Connection with a socket of the address " + socket.getInetAddress());
+        BufferedReader toy = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        Stats backend = new Stats(out);
         boolean a = true;
         while (a) {
-            Socket socket = listener.accept();
-            System.out.println("Estblished Connection with a socket of the address " + socket.getInetAddress());
-            BufferedReader toy = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
             System.out.println("Attempting to read input from port");
             String intake = toy.readLine();
-            System.out.println(intake);
+            System.out.printf("Input: %s\n", intake);
             int command = Integer.parseInt(intake);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            Stats backend = new Stats(out);
+
             switch (command){
                 case 1:
                     sender = backend.Date();
@@ -55,17 +55,17 @@ public class ServerSideLinux {
                 default:
                     sender = "Improper Entry try again";
             }
-
             if (command <=2){
                 System.out.println(sender);
                 out.println(sender);
                 output.write(sender + "\n");
                 sender = "null";
             }
+
             backend.EmptyList();
-            socket.close();
 
         }
+        socket.close();
         listener.close();
         output.close();
     }
@@ -128,7 +128,7 @@ class Stats {
     }
 
     public void NetStat() throws IOException {
-//This prints back the netstat
+        //This prints back the netstat
         Process uptimeNetstat = Runtime.getRuntime().exec("netstat -an ");
         BufferedReader in_2 = new BufferedReader(new InputStreamReader(uptimeNetstat.getInputStream()));
         String line_3;
@@ -141,7 +141,7 @@ class Stats {
     }
 
     public void who() throws IOException {
-        //This prints bacl the current user
+        //This prints back the current user
         Process uptimeUsers = Runtime.getRuntime().exec("who");
         BufferedReader in_4 = new BufferedReader(new InputStreamReader(uptimeUsers.getInputStream()));
         String line_4;
@@ -153,7 +153,7 @@ class Stats {
         return;
     }
     public void runs() throws IOException{
-        //This show the process that are running
+        //This shows the process that are running
         Process uptimeCurrentProcess = Runtime.getRuntime().exec("ps");
         BufferedReader in_6 = new BufferedReader(new InputStreamReader(uptimeCurrentProcess.getInputStream()));
         String line_5;
