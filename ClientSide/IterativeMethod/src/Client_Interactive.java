@@ -32,7 +32,6 @@ public class Client_Interactive {
         Socket s = new Socket(serverAddress, 9090);
         PrintWriter message = new PrintWriter(s.getOutputStream(), true);
         BufferedReader response = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        response.mark(1024);
         StringBuilder text = new StringBuilder();
 
 
@@ -45,15 +44,13 @@ public class Client_Interactive {
 
                 System.out.printf("Matched input. Sending %s to server.\n", command);
                 message.println(command);
-                //System.out.println(response.readLine());
-                //response.reset();
-                int c;
-                while((c = response.read()) != -1 ){
-                    System.out.print((char)c);
-                   text.append((char)c);
+
+                while(response.ready()) {
+                    System.out.println(response.readLine());
                 }
-                System.out.println(text);
+
                 System.out.println("Finished\n");
+                text.setLength(0);
 
                 continue;
             }
