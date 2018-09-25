@@ -27,29 +27,35 @@ public class Client_Interactive {
         String serverAddress = args[0];
         String command = "";
 
-
+        //Create Server Connection
         Socket s = new Socket(serverAddress, 9090);
-        PrintWriter go = new PrintWriter(s.getOutputStream(), true);
+        PrintWriter message = new PrintWriter(s.getOutputStream(), true);
+        BufferedReader response = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
         while (true) {
             DisplayMenu();
             command = input.nextLine();
-            if (command.equals("exit")) {
-                System.out.println("TERMINATING! GOOD BYE!");
-                break;
-            } else {
-                go.println(command);
-                System.out.println("Sent " + command);
-                BufferedReader response = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                System.out.println("Recieved answer");
-                String line;
-                while ((line = response.readLine()) != null) {
-                    String answer = line;
-                    System.out.println(answer);
-                }
+            if (command.matches("^[1-6]$")){//Entered ONLY 1-6
+
+                System.out.printf("Matched input. Sending %s to server.\n", command);
+                message.println(command);
+                System.out.println(response.readLine());
+
             }
+            else if (command.matches("^7$")){
+
+                System.out.prinf("Matched input %s. Exiting.", command);
+                break;
+
+            }
+            System.out.printf("%s is an invalid input.\n", command);
         }
-        System.exit(0);
+
+        response.close();
+        message.close();
+        s.close();
+
+        return;
     }
 
 
@@ -58,7 +64,13 @@ public class Client_Interactive {
         System.out.println("Welcome to Team 5's Client Application Demo!");
         System.out.println("Please select an option from the menu:");
         System.out.println("1) Get the host's current date and time.");
-
+        System.out.println("2) Get the host's uptime.");
+        System.out.println("3) Get the host's memory usage.");
+        System.out.println("4) Run Netstat on the host.");
+        System.out.println("5) List the host's current users.");
+        System.out.println("6) List the host's running processes.");
+        System.out.println("7) Exit the program.\n");
+        System.out.println("Enter a number from 1 to 7 to make your choice:\n")
     }
 
 }
