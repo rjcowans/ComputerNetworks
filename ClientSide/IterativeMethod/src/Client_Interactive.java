@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.CharBuffer;
 import java.text.ParseException;
 import java.util.Scanner;
 
@@ -31,6 +32,9 @@ public class Client_Interactive {
         Socket s = new Socket(serverAddress, 9090);
         PrintWriter message = new PrintWriter(s.getOutputStream(), true);
         BufferedReader response = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        response.mark(1024);
+        StringBuilder text = new StringBuilder();
+
 
         System.out.println("Welcome to Team 3's Client Application Demo!");
 
@@ -39,15 +43,23 @@ public class Client_Interactive {
             command = input.nextLine();
             if (command.matches("^[1-6]$")){//Entered ONLY 1-6
 
-                //System.out.printf("Matched input. Sending %s to server.\n", command);
+                System.out.printf("Matched input. Sending %s to server.\n", command);
                 message.println(command);
-                System.out.println(response.readLine());
-                System.out.println();
+                //System.out.println(response.readLine());
+                //response.reset();
+                int c;
+                while((c = response.read()) != -1 ){
+                    System.out.print((char)c);
+                   text.append((char)c);
+                }
+                System.out.println(text);
+                System.out.println("Finished\n");
+
                 continue;
             }
             else if (command.matches("^7$")){
 
-                //System.out.printf("Matched input %s. Exiting.\n", command);
+                System.out.printf("Matched input %s. Exiting.\n", command);
                 message.println(command);
                 break;
 
