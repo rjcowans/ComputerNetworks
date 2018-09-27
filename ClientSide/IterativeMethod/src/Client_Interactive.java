@@ -32,7 +32,7 @@ public class Client_Interactive {
         Socket s = new Socket(serverAddress, 9090);
         PrintWriter message = new PrintWriter(s.getOutputStream(), true);
         BufferedReader response = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        StringBuilder text = new StringBuilder();
+        String text;
 
 
         System.out.println("Welcome to Team 3's Client Application Demo!");
@@ -45,13 +45,18 @@ public class Client_Interactive {
                 System.out.printf("Matched input. Sending %s to server.\n", command);
                 message.println(command);
 
-                while(response.ready()) {
-                    System.out.println(response.readLine());
+                boolean endToken = true;
+                while(endToken){
+                    text = response.readLine();
+                    if(text.equals("END") || text.equals("END\n")) {
+                        endToken = false;
+                    }
+                    else {
+                        System.out.println(text);
+                    }
                 }
 
                 System.out.println("Finished\n");
-                text.setLength(0);
-
                 continue;
             }
             else if (command.matches("^7$")){
@@ -82,7 +87,7 @@ public class Client_Interactive {
         System.out.println("5) List the host's current users.");
         System.out.println("6) List the host's running processes.");
         System.out.println("7) Exit the program.\n");
-        System.out.println("Enter a number from 1 to 7 to make your choice:\n");
+        System.out.println("Enter a number from 1 to 7 to make your choice: ");
     }
 
 }
