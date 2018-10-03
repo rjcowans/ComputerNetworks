@@ -25,40 +25,47 @@ public class ServerSideLinux {
             PrintWriter serverOutput = new PrintWriter(socket.getOutputStream(), true);
             Stats backend = new Stats(serverOutput);
             boolean a = true;
+            try{
             while (a) {
 
                 System.out.println("Attempting to read input from client.");
                 String intake = clientInput.readLine();
                 System.out.printf("Input: %s\n", intake);
-                int command = Integer.parseInt(intake);
+                  try {
+                        String intake = clientInput.readLine();
+                        System.out.printf("Input: %s\n", intake);
+                        int command = Integer.parseInt(intake);
 
-                switch (command) {
-                    case 1:
-                        backend.Date();
+                        switch (command) {
+                            case 1:
+                                backend.Date();
+                                break;
+                            case 2:
+                                backend.Time();
+                                break;
+                            case 3:
+                                backend.Mem();
+                                break;
+                            case 4:
+                                backend.NetStat();
+                                break;
+                            case 5:
+                                backend.who();
+                                break;
+                            case 6:
+                                backend.runs();
+                                break;
+                            case 7:
+                                System.out.println("Client sends exit.");
+                                a = false;
+                                break;
+                            default:
+                                System.out.println("Improper entry. Try again.");
+                                break;
+                        }
+                    }catch (NumberFormatException e){
+                        System.out.println("Connection interupted ending");
                         break;
-                    case 2:
-                        backend.Time();
-                        break;
-                    case 3:
-                        backend.Mem();
-                        break;
-                    case 4:
-                        backend.NetStat();
-                        break;
-                    case 5:
-                        backend.who();
-                        break;
-                    case 6:
-                        backend.runs();
-                        break;
-                    case 7:
-                        System.out.println("Client sends exit.");
-                        a = false;
-                        break;
-                    default:
-                        System.out.println("Improper entry. Try again.");
-                        break;
-                }
 
             }
             socket.close();
