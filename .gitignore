@@ -1,4 +1,6 @@
 
 \.idea/
 
-ClientSide/IterativeMethod/out/
+/*
+!/ClientSide/IterativeMethod/src
+!/ServerSide/IterativeMethod/src
