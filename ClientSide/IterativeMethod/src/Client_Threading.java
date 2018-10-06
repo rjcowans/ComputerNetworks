@@ -104,7 +104,7 @@ public class Client_Threading {
 
         ClientThread[] threads = new ClientThread[100];
 
-        System.out.println("Welcome to Team 3's Client Application Demo!");
+        //System.out.println("Welcome to Team 3's Client Application Demo!");
         String option = args[2];
 
        /* while ((option < '1') || (option > '7')){
@@ -147,7 +147,8 @@ public class Client_Threading {
         }
         double avgTime = sumOfTimes / (double)clients;
         ClientThread.times.clear();
-        System.out.println("Average time of response = " + avgTime + "ms\n");
+       //System.out.println("Average time of response = " + avgTime + "ms\n");
+        System.out.println(avgTime);
 
     }
 }
