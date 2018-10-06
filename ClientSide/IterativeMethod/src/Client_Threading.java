@@ -61,7 +61,8 @@ class ClientThread extends Thread{
             System.err.println("I/O error with the connection");
             System.exit(1);
         }
-        System.out.printf("Thread %s took %sms\n", this.reqNum, this.reqTime);
+        //Debugging
+        //System.out.printf("Thread %s took %sms\n", this.reqNum, this.reqTime);
         times.add(this.reqTime);
     }
 }
@@ -126,9 +127,9 @@ public class Client_Threading {
         for (int i = 0;i < clients;i++){
             threads[i] = new ClientThread(serverAddress,9090,opts,i);
         }
-        //run the threads
+        //Start the threads
         for (int j = 0;j < clients;j++){
-            threads[j].run();
+            threads[j].start();
         }
 
         //join after all threads have started so that the program waits for all of them to finish
