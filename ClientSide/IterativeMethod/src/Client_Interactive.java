@@ -51,6 +51,8 @@ class ClientThread extends Thread{
                 response = null;
                 //System.out.println(response); //reading from socket
             }
+            this.reqTime = (System.currentTimeMillis() - startTime);
+            
             this.in.close();
             this.out.close();
             this.clientSocket.close();
@@ -59,7 +61,6 @@ class ClientThread extends Thread{
             System.exit(1);
         }
         //calculate the time it took and add it to the times list
-        this.reqTime = (System.currentTimeMillis() - startTime);
         times.add(this.reqTime);
     }
 }
