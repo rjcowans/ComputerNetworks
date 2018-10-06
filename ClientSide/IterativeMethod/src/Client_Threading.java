@@ -51,6 +51,8 @@ class ClientThread extends Thread{
                 response = null;
                 //System.out.println(response); //reading from socket
             }
+            //Calculate total time for send & response
+            this.reqTime = (System.currentTimeMillis() - this.threadTime);
             out.println("7");
             this.in.close();
             this.out.close();
@@ -59,8 +61,7 @@ class ClientThread extends Thread{
             System.err.println("I/O error with the connection");
             System.exit(1);
         }
-        //calculate the time it took and add it to the times list
-        this.reqTime = (System.currentTimeMillis() - this.threadTime);
+        System.out.printf("Thread %s took %sms\n", this.reqNum, this.reqTime);
         times.add(this.reqTime);
     }
 }
@@ -121,38 +122,6 @@ public class Client_Threading {
         }
         String opts = Character.toString(option);
 
-            /*
-            while (true) {
-                //DisplayMenu();
-                command = input.nextLine();
-                if (command.matches("^[1-6]$")){//Entered ONLY 1-6
-                    System.out.printf("Matched input. Sending %s to server.\n", command);
-                    message.println(command);
-                    boolean endToken = true;
-                    while(endToken){
-                        text = response.readLine();
-                        if(text.equals("END") || text.equals("END\n")) {
-                            endToken = false;
-                        }
-                        else {
-                            System.out.println(text);
-                        }
-                    }
-                    System.out.println("Finished\n");
-                    continue;
-                }
-                else if (command.matches("^7$")){
-                    System.out.printf("Matched input %s. Exiting.\n", command);
-                    message.println(command);
-                    break;
-                }
-                System.out.printf("%s is an invalid input.\n", command);
-            }
-            response.close();
-            message.close();
-            s.close();
-            return;
-            */
         //create the threads
         for (int i = 0;i < clients;i++){
             threads[i] = new ClientThread(serverAddress,9090,opts,i);
