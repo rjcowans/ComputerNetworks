@@ -1,3 +1,5 @@
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -44,7 +46,7 @@ class ClientThread extends Thread{
         out.println(this.option); //menu option sent to server
         //Recieve the server's response
         try{
-            while ((response = in.readLine()) != "END"){
+            while (!((response= in.readLine()).equals("END"))){
                 //Uncomment the below print statement to view the data on your screen
                 response = null;
                 //System.out.println(response); //reading from socket
@@ -86,7 +88,7 @@ public class Client_Interactive {
         //Create Server Connection
         //Socket s = new Socket(serverAddress, 9090);
         //PrintWriter message = new PrintWriter(s.getOutputStream(), true);
-        //BufferedReader response = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        //BufferedReader response = new Buf feredReader(new InputStreamReader(s.getInputStream()));
         //String text;
 
         int clients;
@@ -112,7 +114,7 @@ public class Client_Interactive {
         }
         String opts = Character.toString(option);
 
-        clients = 1;
+        clients = 75;
             /*
             while (true) {
                 //DisplayMenu();
@@ -156,7 +158,7 @@ public class Client_Interactive {
         for (int i = 0;i < clients;i++){
             threads[i] = new ClientThread(serverAddress,9090,opts,i);
         }
-        //run the threads
+        //start the threads
         for (int j = 0;j < clients;j++){
             threads[j].run();
         }
