@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -52,7 +50,7 @@ class ClientThread extends Thread{
                 //System.out.println(response); //reading from socket
             }
             this.reqTime = (System.currentTimeMillis() - startTime);
-            
+
             this.in.close();
             this.out.close();
             this.clientSocket.close();
@@ -92,7 +90,7 @@ public class Client_Interactive {
         //BufferedReader response = new Buf feredReader(new InputStreamReader(s.getInputStream()));
         //String text;
 
-        int clients;
+        int clients = Integer.parseInt(args[1]);
 
         ClientThread[] threads = new ClientThread[100];
 
@@ -115,16 +113,15 @@ public class Client_Interactive {
         }
         String opts = Character.toString(option);
 
-        clients = 75;
+
+
             /*
             while (true) {
                 //DisplayMenu();
                 command = input.nextLine();
                 if (command.matches("^[1-6]$")){//Entered ONLY 1-6
-
                     System.out.printf("Matched input. Sending %s to server.\n", command);
                     message.println(command);
-
                     boolean endToken = true;
                     while(endToken){
                         text = response.readLine();
@@ -135,17 +132,49 @@ public class Client_Interactive {
                             System.out.println(text);
                         }
                     }
-
                     System.out.println("Finished\n");
                     continue;
                 }
                 else if (command.matches("^7$")){
-
                     System.out.printf("Matched input %s. Exiting.\n", command);
                     message.println(command);
                     break;
-
                 }
+                System.out.printf("%s is an invalid input.\n", command);
+            }
+            response.close();
+            message.close();
+            s.close();
+            return;
+            */
+        //create the threads
+        for (int i = 0;i < clients;i++){
+            threads[i] = new ClientThread(serverAddress,9090,opts,i);
+        }
+        //start the threads
+        for (int j = 0;j < clients;j++){
+            threads[j].run();
+        }
+
+        //join after all threads have started so that the program waits for all of them to finish
+        for (int k = 0; k < clients; k++){
+            try{
+                threads[k].join();
+            }catch (InterruptedException ie){
+                System.out.println(ie.getMessage());
+            }
+        }
+        //calculate the average server response time
+        long sumOfTimes = 0;
+        for(long x: ClientThread.times){
+            sumOfTimes += x;
+        }
+        double avgTime = sumOfTimes / (double)clients;
+        ClientThread.times.clear();
+        System.out.println("Average time of response = " + avgTime + "ms\n");
+
+    }
+}
                 System.out.printf("%s is an invalid input.\n", command);
             }
 
