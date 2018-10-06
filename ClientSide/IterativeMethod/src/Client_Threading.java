@@ -80,7 +80,13 @@ public class Client_Interactive {
             System.out.print("ERROR: No Server Address Specified. Press Enter to Exit.");
             input.nextLine();
             return;
+        }if (args.length != 2) { //Need both address and # of clients to connect with
+            //Print error then exit.
+            System.out.print("ERROR: Argument Count Mismatch. Press Enter to Exit.");
+            input.nextLine();
+            return;
         }
+        
         String serverAddress = args[0];
         String command;
 
