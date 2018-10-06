@@ -44,13 +44,12 @@ class ClientThread extends Thread{
         out.println(this.option); //menu option sent to server
         //Recieve the server's response
         try{
-            while (!((response= in.readLine()).equals("END"))){
+            while (!((response = in.readLine()).equals("END"))){
                 //Uncomment the below print statement to view the data on your screen
                 response = null;
                 //System.out.println(response); //reading from socket
             }
-            this.reqTime = (System.currentTimeMillis() - startTime);
-
+            out.println("7");
             this.in.close();
             this.out.close();
             this.clientSocket.close();
@@ -59,6 +58,7 @@ class ClientThread extends Thread{
             System.exit(1);
         }
         //calculate the time it took and add it to the times list
+        this.reqTime = (System.currentTimeMillis() - startTime);
         times.add(this.reqTime);
     }
 }
@@ -86,14 +86,14 @@ public class Client_Threading {
             input.nextLine();
             return;
         }
-        
+
         String serverAddress = args[0];
         String command;
 
         //Create Server Connection
         //Socket s = new Socket(serverAddress, 9090);
         //PrintWriter message = new PrintWriter(s.getOutputStream(), true);
-        //BufferedReader response = new Buf feredReader(new InputStreamReader(s.getInputStream()));
+        //BufferedReader response = new BufferedReader(new InputStreamReader(s.getInputStream()));
         //String text;
 
         int clients = Integer.parseInt(args[1]);
@@ -118,8 +118,6 @@ public class Client_Threading {
             option = input.next().charAt(0);
         }
         String opts = Character.toString(option);
-
-
 
             /*
             while (true) {
@@ -157,7 +155,7 @@ public class Client_Threading {
         for (int i = 0;i < clients;i++){
             threads[i] = new ClientThread(serverAddress,9090,opts,i);
         }
-        //start the threads
+        //run the threads
         for (int j = 0;j < clients;j++){
             threads[j].run();
         }
@@ -181,42 +179,3 @@ public class Client_Threading {
 
     }
 }
-                System.out.printf("%s is an invalid input.\n", command);
-            }
-
-            response.close();
-            message.close();
-            s.close();
-
-            return;
-            */
-        //create the threads
-        for (int i = 0;i < clients;i++){
-            threads[i] = new ClientThread(serverAddress,9090,opts,i);
-        }
-        //start the threads
-        for (int j = 0;j < clients;j++){
-            threads[j].run();
-        }
-
-        //join after all threads have started so that the program waits for all of them to finish
-        for (int k = 0; k < clients; k++){
-            try{
-                threads[k].join();
-            }catch (InterruptedException ie){
-                System.out.println(ie.getMessage());
-            }
-        }
-        //calculate the average server response time
-        long sumOfTimes = 0;
-        for(long x: ClientThread.times){
-            sumOfTimes += x;
-        }
-        double avgTime = sumOfTimes / (double)clients;
-        ClientThread.times.clear();
-        System.out.println("Average time of response = " + avgTime + "ms\n");
-
-    }
-}
-
-
