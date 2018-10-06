@@ -147,8 +147,7 @@ public class Client_Threading {
         }
         double avgTime = sumOfTimes / (double)clients;
         ClientThread.times.clear();
-       //System.out.println("Average time of response = " + avgTime + "ms\n");
-        System.out.println(avgTime);
+        System.out.println("Average time of response for " + clients + " clients is = " + avgTime + "ms\n");
 
     }
 }
