@@ -64,7 +64,7 @@ class ClientThread extends Thread{
 }
 
 
-public class Client_Interactive {
+public class Client_Threading {
 
     /**
      * Interactive Client for Demo Purposes
