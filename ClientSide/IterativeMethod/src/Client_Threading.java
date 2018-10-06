@@ -14,6 +14,7 @@ class ClientThread extends Thread{
     BufferedReader in;
     String option;
     int reqNum;
+    long threadTime;
 
     //Time attributes
     static ArrayList<Long> times = new ArrayList<Long>();
@@ -28,6 +29,7 @@ class ClientThread extends Thread{
             this.option = option;
             this.reqNum = i;
             this.reqTime = 0;
+            this.threadTime = 0;
         }catch (UnknownHostException e){
             System.err.println("Dont know about host " + hostName);
             System.exit(1);
@@ -40,7 +42,7 @@ class ClientThread extends Thread{
     //The code that the threads execute when started
     public void run(){
         String response;
-        long startTime = System.currentTimeMillis();
+        this.threadTime = System.currentTimeMillis();
         out.println(this.option); //menu option sent to server
         //Recieve the server's response
         try{
@@ -58,7 +60,7 @@ class ClientThread extends Thread{
             System.exit(1);
         }
         //calculate the time it took and add it to the times list
-        this.reqTime = (System.currentTimeMillis() - startTime);
+        this.reqTime = (System.currentTimeMillis() - this.threadTime);
         times.add(this.reqTime);
     }
 }
