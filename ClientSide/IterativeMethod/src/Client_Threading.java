@@ -84,7 +84,7 @@ public class Client_Threading {
             System.out.print("ERROR: No Server Address Specified. Press Enter to Exit.");
             input.nextLine();
             return;
-        }if (args.length != 2) { //Need both address and # of clients to connect with
+        }if (args.length != 3) { //Need both address and # of clients and load type to connect with
             //Print error then exit.
             System.out.print("ERROR: Argument Count Mismatch. Press Enter to Exit.");
             input.nextLine();
@@ -105,9 +105,9 @@ public class Client_Threading {
         ClientThread[] threads = new ClientThread[100];
 
         System.out.println("Welcome to Team 3's Client Application Demo!");
-        char option = 'a';
+        String option = args[2];
 
-        while ((option < '1') || (option > '7')){
+       /* while ((option < '1') || (option > '7')){
             //Displays the Client Menu
             System.out.println("Please select an option from the menu:");
             System.out.println("1) Get the host's current date and time.");
@@ -121,11 +121,11 @@ public class Client_Threading {
             System.out.println("Please enter a number between 1 - 7");
             option = input.next().charAt(0);
         }
-        String opts = Character.toString(option);
+        String opts = Character.toString(option); */
 
         //create the threads
         for (int i = 0;i < clients;i++){
-            threads[i] = new ClientThread(serverAddress,9090,opts,i);
+            threads[i] = new ClientThread(serverAddress,9090,option,i);
         }
         //Start the threads
         for (int j = 0;j < clients;j++){
