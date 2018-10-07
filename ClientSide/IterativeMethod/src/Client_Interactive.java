@@ -40,26 +40,24 @@ public class Client_Interactive {
         while (true) {
             DisplayMenu();
             command = input.nextLine();
-            if (command.matches("^[1-6]$")){//Entered ONLY 1-6
+            if (command.matches("^[1-6]$")) {//Entered ONLY 1-6
 
-                System.out.printf("Matched input. Sending %s to server.\n", command);
+                //System.out.printf("Matched input. Sending %s to server.\n", command);
                 message.println(command);
 
                 boolean endToken = true;
-                while(endToken){
+                while (endToken) {
                     text = response.readLine();
-                    if(text.equals("END") || text.equals("END\n")) {
+                    if (text.equals("END") || text.equals("END\n")) {
                         endToken = false;
-                    }
-                    else {
+                    } else {
                         System.out.println(text);
                     }
                 }
 
                 System.out.println("Finished\n");
                 continue;
-            }
-            else if (command.matches("^7$")){
+            } else if (command.matches("^7$")) {
 
                 System.out.printf("Matched input %s. Exiting.\n", command);
                 message.println(command);
