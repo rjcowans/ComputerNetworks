@@ -1,1 +1,8 @@
-ComputerNetwork
+Client-Server Networking Project for CNT4504 @ UNF
+
+A multithreaded client sends multiple requests to an interative server, and logs the average response times among
+all of it's threads.
+
+There is a seperate interactive client that sends multiple requests to the server based on user input.
+
+Coded by Honya Elfayoumy, Richard Cowans, Stephen Sisley
