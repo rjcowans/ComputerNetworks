@@ -1,3 +1,16 @@
+/*                                                                                          Students apart of project: Stephen Sisley
+                                                                                                                       Honya Elfayoumy
+                                                                                                                       Richard Cowans
+                                                                Documentation
+Hello Professor, 
+    Quick documetation on what is going on in the this part of the code. This file is simulating the server side of a iterative sever.
+It waits for connection to a socket and then waits for commands.  Once a command is reciveved it then performs the function linked
+to the command, which are of the following: Uptime, Date,Memory, users, process,netstat,exit. We also added a hidden command, for the server that shuts it down from the client position. This server is running in Iterative, which means that there is a 1 by 1 accepting of each client. The OS system running it the Server is Linux so have to run Linux type command to get the output we desired. BufferedReader is used to taken in input from the Client and PrintWriter is used to send back. Please Enjoy the code!!!
+
+Many Thanks,
+Group Three: Stephen,Honya,Richard
+
+*/
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -60,7 +73,13 @@ public class ServerSideLinux {
                             System.out.println("Client sends exit.");
                             a = false;
                             break;
+                        case 8:
+                            System.out.println("Client request for shutdown.....\n Shutting Down");
+                            startServer = false;
+                            a = false;
+                            break;
                         default:
+                            serverOutput.println("Improper entry. Try again");
                             System.out.println("Improper entry. Try again.");
                             break;
                     }
