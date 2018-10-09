@@ -1,0 +1,32 @@
+Average time of response for 1 clients is = 4.0ms
+
+Average time of response for 5 clients is = 16.4ms
+
+Average time of response for 10 clients is = 24.4ms
+
+Average time of response for 15 clients is = 30.266666666666666ms
+
+Average time of response for 20 clients is = 40.0ms
+
+Average time of response for 25 clients is = 50.76ms
+
+Average time of response for 30 clients is = 60.56666666666667ms
+
+Average time of response for 35 clients is = 71.97142857142858ms
+
+Average time of response for 40 clients is = 83.35ms
+
+Average time of response for 45 clients is = 96.28888888888889ms
+
+Average time of response for 50 clients is = 114.44ms
+
+Average time of response for 55 clients is = 123.0ms
+
+Average time of response for 60 clients is = 124.26666666666667ms
+
+Average time of response for 65 clients is = 132.84615384615384ms
+
+Average time of response for 70 clients is = 150.5ms
+
+Average time of response for 75 clients is = 177.52ms
+
