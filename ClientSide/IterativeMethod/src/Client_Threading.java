@@ -43,7 +43,7 @@ public class Client_Threading {
         int clients = Integer.parseInt(args[1]); //# Of Clients to Connect With
         String option = args[2]; //The load type: 1 for Date&Time, 4 for NetStat.
 
-        ClientThread[] threads = new ClientThread[100];
+        ClientThread[] threads = new ClientThread[args[1]];
 
         //create the threads
         for (int i = 0; i < clients; i++) {
