@@ -192,7 +192,7 @@ class Stats {   //Runs the requested programs
 
     public void runs() throws IOException {
         //This shows the process that are running
-        Process uptimeCurrentProcess = Runtime.getRuntime().exec("ps");
+        Process uptimeCurrentProcess = Runtime.getRuntime().exec("ps -e");
         BufferedReader in_6 = new BufferedReader(new InputStreamReader(uptimeCurrentProcess.getInputStream()));
         String line_5;
         while ((line_5 = in_6.readLine()) != null) {
