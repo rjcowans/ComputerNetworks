@@ -146,16 +146,10 @@ class Stats {   //Runs the requested programs
         BufferedReader in_2 = new BufferedReader(new InputStreamReader(memStat.getInputStream()));
         String line_2;
         while ((line_2 = in_2.readLine()) != null) {
-            if (line_2.startsWith("             total")) {
-                headerUsage = line_2;
-            }
-            if (line_2.startsWith("Mem")) {
-                usage = line_2;
-                break;
-            }
+              out.println(line_2);
         }
-        out.println(headerUsage);
-        out.println(usage);
+        //out.println(headerUsage);
+        //out.println(usage);
         out.println("END");
 
         in_2.close();
