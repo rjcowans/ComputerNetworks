@@ -1,3 +1,21 @@
+/*                                                                                          Students apart of project: Stephen Sisley
+                                                                                                                       Honya Elfayoumy
+                                                                                                                       Richard Cowans
+                                                                Documentation
+
+    This program contains the client-side code for the non-interactive, multi-threaded portion of the project. It requires the IP
+    address, number of clients to create, and load type (Date/1 or NetStat/4) as run arguments. It then creates the
+    specified number of threads and runs through each thread in a second loop to start the threads. Each thread takes
+    a timestamp just before it sends its request to the server and another just after it receives the "END" token and
+    adds the difference calculated to a timeArray, which we then loop through to calculate the mean response time.
+    A separate bash script is used to quickly and easily run through each of the combinations of client size and load
+    type to generate the graphs for our project.
+
+Many Thanks,
+Group Three: Stephen,Honya,Richard
+
+*/
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,10 +28,6 @@ import java.util.Scanner;
 
 public class Client_Threading {
 
-    /*
-     * Non-interactive multi-threaded client program for sending multiple, concurrent requests to the server
-     * Run Arguments: IP Address to connect to, # of clients to create, load type
-     */
     public static void main(String[] args) throws IOException {
 
         Scanner input = new Scanner(System.in);
@@ -48,6 +62,7 @@ public class Client_Threading {
             }
         }
         //calculate the average server response time
+
         long sumOfTimes = 0;
         for (long x : ClientThread.times) {
             sumOfTimes += x;
@@ -73,7 +88,7 @@ class ClientThread extends Thread {
     static ArrayList<Long> times = new ArrayList<Long>();
     long reqTime;
 
-    //Client Thread Constuctor
+    //Client Thread Constructor
     ClientThread(String hostName, int portNumber, String option, int i) {
         try {
             this.clientSocket = new Socket(hostName, portNumber);
@@ -119,6 +134,7 @@ class ClientThread extends Thread {
 
         //Debugging
         //System.out.printf("Thread %s took %sms\n", this.reqNum, this.reqTime);
+
         //Record this thread's response time
         times.add(this.reqTime);
     }
