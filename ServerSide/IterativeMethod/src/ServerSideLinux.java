@@ -142,7 +142,7 @@ class Stats {   //Runs the requested programs
         //This print the memory usage
         String headerUsage = "";
         String usage = "";
-        Process memStat = Runtime.getRuntime().exec("free -m");
+        Process memStat = Runtime.getRuntime().exec("free");
         BufferedReader in_2 = new BufferedReader(new InputStreamReader(memStat.getInputStream()));
         String line_2;
         while ((line_2 = in_2.readLine()) != null) {
