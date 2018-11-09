@@ -1,4 +1,4 @@
-/*                                                                                          Students apart of project: Stephen Sisley
+/*                                                                                          Students part of project: Stephen Sisley
                                                                                                                        Honya Elfayoumy
                                                                                                                        Richard Cowans
                                                                 Documentation
