@@ -6,6 +6,7 @@ for number in `echo $a`
 do
         echo "Doing $number clients for option 1"
 	java Client_Threading 192.168.100.106 $number 4 >>  Client_Threading_4.txt
+	wait
     
 done
 echo "We are finished"
