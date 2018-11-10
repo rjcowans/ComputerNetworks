@@ -1,8 +1,11 @@
-/*                                                                                          Students apart of project: Stephen Sisley
-                                                                                                                       Honya Elfayoumy
-                                                                                                                       Richard Cowans
+/*                                                                              Project Made By:Stephen Sisiley
+                                                                                                Honya Elfayoumy
+                                                                                                Richard Cowans
                                                                 Documentation
-
+This is our Threaded server that runs on a concurrent basis instead of iterative basis. We decided to move the connection
+the server makes to the thread class that way everytime it connect to a instance from the client it spawns a new child. We
+expect to see drastic change in the average time compared to our Iterative method. The backend was the only part of the project
+that should have changed so when the result are show this will be a good use of comparision.
 */
 import java.io.BufferedReader;
 import java.io.IOException;
