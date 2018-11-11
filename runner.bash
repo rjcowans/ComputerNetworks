@@ -1,7 +1,7 @@
 
 
-a="1 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75"
-echo "Values" >> Client_Threading_1.txt
+a="75 70 65 60 55 50 45 40 45 35 30 25 20 15 10 5 1"
+#echo "Values" >> Client_Threading_1.txt
 for number in `echo $a` 
 do
         echo "Doing $number clients for option 1"
