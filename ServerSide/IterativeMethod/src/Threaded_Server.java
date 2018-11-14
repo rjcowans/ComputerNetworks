@@ -7,6 +7,7 @@ the server makes to the thread class that way everytime it connect to a instance
 expect to see drastic change in the average time compared to our Iterative method. The backend was the only part of the project
 that should have changed so when the result are show this will be a good use of comparision.
 */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,11 +31,13 @@ public class Threaded_Server {
             Socket socket = listener.accept();
             System.out.println("Established Connection with a socket of the address " + socket.getInetAddress());
             System.out.print("Attempting to pass socket off to a thread...");
+
             try {
                 new connectionThread(socket).start();
                 System.out.print("success.\n");
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.print("failed.\n");
+                e.printStackTrace();
             }
         }
         //Stop Server
@@ -42,26 +45,26 @@ public class Threaded_Server {
     }
 }
 
-class connectionThread extends Thread{
+class connectionThread extends Thread {
 
     Socket clientSocket;
     BufferedReader clientInput;
     PrintWriter serverOutput;
     Stats1 backend;
 
-    //This is solely for numbering the threads out of interest.
+    //This is for numbering the threads out of interest.
+    //Tests both with and without this feature showed no appreciable difference in execution times
     static AtomicInteger count = new AtomicInteger(0);
     int threadNumber;
-    //And can be removed later.
 
-    public connectionThread(Socket connection){
+    public connectionThread(Socket connection) {
 
         clientSocket = connection;
-        try{
+        try {
             clientInput = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             serverOutput = new PrintWriter(connection.getOutputStream(), true);
             backend = new Stats1(serverOutput);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Error creating I/O for" + connection.getLocalAddress());
         }
 
@@ -69,7 +72,7 @@ class connectionThread extends Thread{
 
     }
 
-    public void run(){
+    public void run() { //Code is nearly identical to the iterative server, but placed in the run() method here
 
         boolean keepConnected = true;
 
@@ -77,7 +80,7 @@ class connectionThread extends Thread{
             try {
                 System.out.printf("Thread %d is attempting to read input from client.\n", threadNumber);
                 String intake = clientInput.readLine();
-                System.out.printf("Input: %s\n", intake);
+                //System.out.printf("Input: %s\n", intake);
                 int command = Integer.parseInt(intake);
 
                 switch (command) {
@@ -111,7 +114,7 @@ class connectionThread extends Thread{
 
             } catch (NumberFormatException e) {
                 //Prevent Server Crashing if Client unexpectedly exits
-                System.out.println("Connection interrupted ending.");
+                System.out.println("Connection interrupted: ending.");
                 keepConnected = false;
                 break;
             } catch (IOException e) {
@@ -123,12 +126,12 @@ class connectionThread extends Thread{
         }//End of while
 
         //Connection ended, try to clean up our I/O
-        try{
+        try {
             clientInput.close();
             serverOutput.close();
             clientSocket.close();
             System.out.printf("Thread %d has finished.", threadNumber);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Error closing socket IO in thread" + threadNumber);
         }
     }//End of run method
