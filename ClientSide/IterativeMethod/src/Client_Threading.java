@@ -136,7 +136,11 @@ class ClientThread extends Thread {
         //System.out.printf("Thread %s took %sms\n", this.reqNum, this.reqTime);
 
         //Record this thread's response time
-        times.add(this.reqTime);
+        updateTime(this.reqTime);
+    }
+
+    private synchronized void updateTime(long time){
+        times.add(time);
     }
 }
 
